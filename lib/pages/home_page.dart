@@ -101,37 +101,42 @@ class _HomePageState extends State<HomePage> {
           ),
           Padding(
             padding: const EdgeInsets.only(top: 30),
-            child: Container(
-              width: 350,
-              height: 580 ,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(15),
-                color: Colors.white
-              ),
-              child: ListView.builder(
-                itemCount: 10,
-                itemBuilder: (context, index) {
-                  return Card(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15)
-                    ),
-                    child: SizedBox(
-                      width: 350,
-                      height: 70,
-                      child: ListTile(
-                      leading: Padding(
-                        padding: const EdgeInsets.only(top: 18),
-                        child: Checkbox(value: false, onChanged: ((value) {
-                          if(value!){
-                            
-                          }
-                        })),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(15),
+              child: Container(
+                width: 350,
+                height: 530 ,
+                color: Colors.white,
+                child: ListView.builder(
+                  itemCount: 10,
+                  itemBuilder: (context, index) {
+                    return SizedBox(
+                      width: 300,
+                      height: 80,
+                      child: Card(
+                        shape: RoundedRectangleBorder(borderRadius:Bord),
+                        color: Colors.purple,
+                        child: ListTile(
+                          // shape:RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                          contentPadding: EdgeInsets.symmetric(horizontal: 10),
+                        leading: Padding(
+                          padding: const EdgeInsets.only(top: 18),
+                          child: Checkbox(value: false, onChanged: ((value) {
+                            if(value!){
+                              
+                            }
+                          })),
+                        ),
+                        title: Text("first task",style:TextStyle(
+                          color: kSecondaryTextColor,
+                          fontSize: 20,
+                        ),),
+                        trailing: Icon(Icons.remove),
+                                        ),
                       ),
-                      title: Text("first task"),
-                      trailing: Icon(Icons.remove),
-                                      ),
-                    ),);
-                },
+                    );
+                  },
+                ),
               ),
             ),
           ),
