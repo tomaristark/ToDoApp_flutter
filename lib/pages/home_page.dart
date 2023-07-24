@@ -15,6 +15,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   String _currentTime = "";
+  String _currentDate ='';
 
   @override
   void initState() {
@@ -26,6 +27,7 @@ class _HomePageState extends State<HomePage> {
     Timer.periodic(Duration(seconds: 1), (timer) {
       setState(() {
         _currentTime = _getCurrentTime();
+        _currentDate = _getCurrentDate();
       });
     });
   }
@@ -35,6 +37,12 @@ class _HomePageState extends State<HomePage> {
     String formatTime =
         '${_formatTimeConponent(now.hour)}:${_formatTimeConponent(now.minute)}';
     return formatTime;
+  }
+
+  String _getCurrentDate(){
+    DateTime now  = DateTime.now();
+    String formatDate = '${_formatTimeConponent(now.day)}/${_formatTimeConponent(now.month)}/${_formatTimeConponent(now.year)}';
+    return formatDate;
   }
 
   String _formatTimeConponent(int timeConponent) {
@@ -52,7 +60,13 @@ class _HomePageState extends State<HomePage> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                ClockWidget(currentTime: _currentTime),
+                Column(
+                  children: [
+                    ClockWidget(currentTime: _currentTime),
+                    DateWidget(currentDate: _currentDate),
+                  ],
+                ),
+                
                 Padding(
                   padding: const EdgeInsets.only(top: kSP3x),
                   child: GestureDetector(
@@ -71,7 +85,7 @@ class _HomePageState extends State<HomePage> {
                             color: kSecondaryTextColor,
                           ),
                           Padding(
-                            padding: const EdgeInsets.only(right: kSP10x),
+                            padding: EdgeInsets.only(right: kSP10x),
                             child: Text(
                               kAddTask,
                               style: TextStyle(color: kSecondaryTextColor),
@@ -85,8 +99,75 @@ class _HomePageState extends State<HomePage> {
               ],
             ),
           ),
+          Padding(
+            padding: const EdgeInsets.only(top: 30),
+            child: Container(
+              width: 350,
+              height: 580 ,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(15),
+                color: Colors.white
+              ),
+              child: ListView.builder(
+                itemCount: 10,
+                itemBuilder: (context, index) {
+                  return Card(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15)
+                    ),
+                    child: SizedBox(
+                      width: 350,
+                      height: 70,
+                      child: ListTile(
+                      leading: Padding(
+                        padding: const EdgeInsets.only(top: 18),
+                        child: Checkbox(value: false, onChanged: ((value) {
+                          if(value!){
+                            
+                          }
+                        })),
+                      ),
+                      title: Text("first task"),
+                      trailing: Icon(Icons.remove),
+                                      ),
+                    ),);
+                },
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 10),
+            child: Container(
+              width: 350,
+              height: 50,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(15),
+                color: Colors.purple
+              ),
+              child:const  Center(child: Text("Delete All",style: TextStyle(
+                color: kSecondaryTextColor
+              ),)),
+            ),
+          )
         ],
       ),
+    );
+  }
+}
+
+class DateWidget extends StatelessWidget {
+  const DateWidget({
+    super.key,
+    required String currentDate,
+  }) : _currentDate = currentDate;
+
+  final String _currentDate;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(right: 65 ,top: 5),
+      child: Text(_currentDate,style: const TextStyle(color: Colors.purple),),
     );
   }
 }
