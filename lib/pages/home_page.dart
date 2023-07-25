@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:todoapp/boxes.dart';
 import 'package:todoapp/constant/String.dart';
 import 'package:todoapp/constant/color.dart';
 import 'package:todoapp/constant/dimen.dart';
+import 'package:todoapp/pages/add_task.dart';
+import 'package:todoapp/persistent/tasks/tasks.dart';
+import 'package:todoapp/utils/extensions.dart';
 import 'dart:async';
 
 import '../item_view/home_page_item_view.dart';
@@ -15,7 +19,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   String _currentTime = "";
-  String _currentDate ='';
+  String _currentDate = '';
 
   @override
   void initState() {
@@ -39,9 +43,10 @@ class _HomePageState extends State<HomePage> {
     return formatTime;
   }
 
-  String _getCurrentDate(){
-    DateTime now  = DateTime.now();
-    String formatDate = '${_formatTimeConponent(now.day)}/${_formatTimeConponent(now.month)}/${_formatTimeConponent(now.year)}';
+  String _getCurrentDate() {
+    DateTime now = DateTime.now();
+    String formatDate =
+        '${_formatTimeConponent(now.day)}/${_formatTimeConponent(now.month)}/${_formatTimeConponent(now.year)}';
     return formatDate;
   }
 
@@ -66,11 +71,12 @@ class _HomePageState extends State<HomePage> {
                     DateWidget(currentDate: _currentDate),
                   ],
                 ),
-                
                 Padding(
                   padding: const EdgeInsets.only(top: kSP3x),
                   child: GestureDetector(
-                    onTap: () {},
+                    onTap: () {
+                      context.navigationNextScreen(const AddTaskPgae());
+                    },
                     child: Container(
                       width: kSP100x,
                       height: kSP50x,
@@ -105,34 +111,97 @@ class _HomePageState extends State<HomePage> {
               borderRadius: BorderRadius.circular(15),
               child: Container(
                 width: 350,
-                height: 530 ,
+                height: 530,
                 color: Colors.white,
-                child: ListView.builder(
-                  itemCount: 10,
+                child: ListView.separated(
+                  separatorBuilder: (context, index) {
+                    return const SizedBox(
+                      height: 10,
+                    );
+                  },
+                  itemCount: boxTasks.length,
                   itemBuilder: (context, index) {
-                    return SizedBox(
-                      width: 300,
-                      height: 80,
-                      child: Card(
-                        shape: RoundedRectangleBorder(borderRadius:Bord),
-                        color: Colors.purple,
-                        child: ListTile(
-                          // shape:RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                          contentPadding: EdgeInsets.symmetric(horizontal: 10),
-                        leading: Padding(
-                          padding: const EdgeInsets.only(top: 18),
-                          child: Checkbox(value: false, onChanged: ((value) {
-                            if(value!){
-                              
-                            }
-                          })),
+                    Tasks tasks = boxTasks.getAt(index);
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      child: Container(
+                        width: 200,
+                        height: 70,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(15),
+                            color: kPrimaryColor),
+                        child: Row(
+                          children: [
+                            Column(
+                              children: [
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.only(top: 8, left: 10),
+                                  child: SizedBox(
+                                    width: 150,
+                                    height: 29,
+                                    child: Text(
+                                      tasks.title,
+                                      style: const TextStyle(
+                                        color: kSecondaryTextColor,
+                                        fontSize: 22,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 10),
+                                  child: SizedBox(
+                                    width: 150,
+                                    height: 20,
+                                    child: Text(
+                                      tasks.description,
+                                      style: TextStyle(
+                                          color: kSecondaryTextColor,
+                                          fontSize: 14),
+                                    ),
+                                  ),
+                                )
+                              ],
+                            ),
+                            Column(
+                              children: [
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 4),
+                                  child: Text(
+                                    tasks.date,
+                                    style: TextStyle(
+                                        color: kSecondaryTextColor,
+                                        fontSize: 20),
+                                  ),
+                                ),
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 2),
+                                  child: Text(
+                                    tasks.time,
+                                    style: TextStyle(
+                                        color: kSecondaryTextColor,
+                                        fontSize: 20),
+                                  ),
+                                )
+                              ],
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(left: 25),
+                              child: IconButton(
+                                  onPressed: () {
+                                    boxTasks.deleteAt(index);
+                                  },
+                                  icon: const Icon(
+                                    Icons.done,
+                                    color: kSecondaryTextColor,
+                                    size: 30,
+                                  )),
+                            )
+                          ],
                         ),
-                        title: Text("first task",style:TextStyle(
-                          color: kSecondaryTextColor,
-                          fontSize: 20,
-                        ),),
-                        trailing: Icon(Icons.remove),
-                                        ),
                       ),
                     );
                   },
@@ -142,16 +211,22 @@ class _HomePageState extends State<HomePage> {
           ),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 10),
-            child: Container(
-              width: 350,
-              height: 50,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(15),
-                color: Colors.purple
+            child: GestureDetector(
+              onTap: () {
+                boxTasks.clear();
+              },
+              child: Container(
+                width: 350,
+                height: 50,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(15),
+                    color: Colors.purple),
+                child: const Center(
+                    child: Text(
+                  "Delete All",
+                  style: TextStyle(color: kSecondaryTextColor),
+                )),
               ),
-              child:const  Center(child: Text("Delete All",style: TextStyle(
-                color: kSecondaryTextColor
-              ),)),
             ),
           )
         ],
@@ -171,8 +246,11 @@ class DateWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(right: 65 ,top: 5),
-      child: Text(_currentDate,style: const TextStyle(color: Colors.purple),),
+      padding: const EdgeInsets.only(right: 65, top: 5),
+      child: Text(
+        _currentDate,
+        style: const TextStyle(color: Colors.purple),
+      ),
     );
   }
 }
