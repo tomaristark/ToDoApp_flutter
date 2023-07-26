@@ -21,10 +21,13 @@ class _HomePageState extends State<HomePage> {
   String _currentTime = "";
   String _currentDate = '';
 
+  
+
   @override
   void initState() {
     super.initState();
     _updateTime();
+    
   }
 
   void _updateTime() {
@@ -53,6 +56,23 @@ class _HomePageState extends State<HomePage> {
   String _formatTimeConponent(int timeConponent) {
     return timeConponent.toString().padLeft(2, '0');
   }
+  void showAlert(){
+    showDialog(context: context, builder:(BuildContext context) {
+      return
+       AlertDialog(
+        title: Text("alert"),
+        content: Text("time up"),
+        actions: [
+          TextButton(onPressed: (){
+            
+          }, child: Text("ok"))
+        ],
+       )
+      ;
+    });
+  }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -129,7 +149,8 @@ class _HomePageState extends State<HomePage> {
                         height: 70,
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(15),
-                            color: kPrimaryColor),
+                            color: (_currentTime!=tasks.time)?kPrimaryColor:Colors.white
+                            ),
                         child: Row(
                           children: [
                             Column(
@@ -204,6 +225,7 @@ class _HomePageState extends State<HomePage> {
                         ),
                       ),
                     );
+                    
                   },
                 ),
               ),
@@ -231,6 +253,7 @@ class _HomePageState extends State<HomePage> {
           )
         ],
       ),
+    
     );
   }
 }

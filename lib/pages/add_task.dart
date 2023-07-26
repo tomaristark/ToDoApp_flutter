@@ -3,6 +3,8 @@ import 'package:todoapp/boxes.dart';
 import 'package:todoapp/constant/color.dart';
 import 'package:todoapp/persistent/tasks/tasks.dart';
 
+import '../item_view/add_task_item_view.dart';
+
 
 class AddTaskPgae extends StatefulWidget {
   const AddTaskPgae({super.key});
@@ -63,66 +65,11 @@ class _AddTaskPgaeState extends State<AddTaskPgae> {
       backgroundColor: Colors.black,
       body: Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.only(top: 40,right: 300),
-            child: IconButton(onPressed: (){
-              Navigator.of(context).pop();
-            }, icon: const Icon(Icons.arrow_back_ios,color: Colors.white,size: 25,)),
-          ),
+          BackIcon(),
        const TextInAddtask(addText: "Title",rightPD: 300,topPD: 30,),
-         Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20),
-      child: Container(
-        width: 400,
-        height: 50,
-        decoration: 
-        BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(15),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.only(left: 10),
-          child: TextField(
-            style: TextStyle(
-              color: kPrimaryTextColor
-            ),
-            controller: titleController,
-            maxLines: 1,
-            autofocus: false,
-            decoration: const InputDecoration(
-              border: InputBorder.none
-            ),
-          ),
-        ),
-      ),
-    ),
+         TileInput(titleController: titleController),
       const TextInAddtask(addText: "Add Description",rightPD: 200,topPD: 10,),
-         Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20),
-      child: Container(
-        width: 400,
-        height: 150,
-        decoration: 
-        BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(15),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.only(left: 10),
-          child: TextField(
-            style: TextStyle(
-              color: kPrimaryTextColor
-            ),
-            controller: descriptionController,
-            maxLines: 3,
-            autofocus: false,
-            decoration: const InputDecoration(
-              border: InputBorder.none
-            ),
-          ),
-        ),
-      ),
-    ),
+         DescriptionInput(descriptionController: descriptionController),
         const TextInAddtask(addText: "Pick a Date", rightPD: 230, topPD:10),
       Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 10),
@@ -222,26 +169,5 @@ class _AddTaskPgaeState extends State<AddTaskPgae> {
       
       ]),
     );
-  }
-}
-
-
-
-class TextInAddtask extends StatelessWidget {
-  const TextInAddtask({
-    super.key, required this.addText, required this.rightPD, required this.topPD,
-    
-  });
-
-  final String addText;
-  final double rightPD; 
-  final double topPD;
-
-  @override
-  Widget build(BuildContext context) {
-    return   Padding(
-       padding:   EdgeInsets.only(top: topPD,right: rightPD,bottom: 10),
-       child: Text(addText,style: const TextStyle( color: kPrimaryColor,fontSize: 20),),
-     );
   }
 }
